@@ -1,4 +1,4 @@
-// Much of my project code has been cobbled/learned from previous labs and projects
+// Much of my project code has been cobbled/learned from previous labs and projects.
 
 import java.util.ArrayList;
 
