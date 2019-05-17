@@ -14,17 +14,20 @@ public class VaultGUI extends JFrame {
     private JTextField titleInput;
     private JButton addButton;
     private JButton removeButton;
-// Activate controller
+    private JList<Comic> comicList;  // Add this component to the VaultGUI form
+    // Activate controller
     private Controller controller;
 
-    private DefaultListModel<Vault> allComicsListModel;
+    private DefaultListModel<Comic> allComicsListModel;
 // Run GUI
     VaultGUI(Controller controller) {
         // Need this reference to the controller object to make requests from the database
         this.controller = controller;
 
-        // Configure the list model
-        allComicsListModel = new DefaultListModel<Vault>();
+        // Configure the list model  TODO initialize the allComicsListModel before this line
+        allComicsListModel = new DefaultListModel<Comic>();
+        
+        // Add a JList to the GUI, call it comicList, and this line will work
         comicList.setModel(allComicsListModel);
         
         addListeners();
@@ -77,7 +80,7 @@ public class VaultGUI extends JFrame {
                     return;
                 }
 
-                Vault vaultRecord = new Comic(name, issue, year, title);
+                Comic vaultRecord = new Comic(name, issue, year, title);
                 String result = controller.addComicToVault(vaultRecord);
 
                 if (result.equals(VaultDB.OK)) {
@@ -87,7 +90,7 @@ public class VaultGUI extends JFrame {
                     yearInput.setText("");
                     nameInput.setText("");
 
-                    ArrayList<Vault> allData = controller.getAllData();
+                    ArrayList<Comic> allData = controller.getAllData();
                 } else {
                     errorDialog(result);
                 }
@@ -99,13 +102,14 @@ public class VaultGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Identify what is selected
-                Vault comic = comicList.getSelectedValue();
+                
+                Comic comic = comicList.getSelectedValue();
                 if (comic == null) {
                     JOptionPane.showMessageDialog(VaultGUI.this, "Please choose a comic to " +
                             "remove.");
                 } else {
                     controller.deleteComic(comic);
-                    ArrayList<Vault> comics = controller.getAllData();
+                    ArrayList<Comic> comics = controller.getAllData();
                     setListData(comics);
                 }
                 }
@@ -113,14 +117,17 @@ public class VaultGUI extends JFrame {
 
     }
 // Update Collection
-    void setListData(ArrayList<Vault> data) {
+    void setListData(ArrayList<Comic> data) {
         allComicsListModel.clear();
 
         if (data != null) {
-            for (Vault comic : data) {
+            for (Comic comic : data) {
                 allComicsListModel.addElement(comic);
             }
         }
     }
-
+    
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
+    }
 }

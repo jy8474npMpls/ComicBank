@@ -14,21 +14,21 @@ public class Controller {
     private void startApp() {
         db = new VaultDB();
 
-        ArrayList<Vault> allData = db.fetchAllRecords();
+        ArrayList<Comic> allData = db.fetchAllRecords();
 
         gui = new VaultGUI(this);
         gui.setListData(allData);
     }
 // Get all data
-    ArrayList<Vault> getAllData() {
+    ArrayList<Comic> getAllData() {
         return db.fetchAllRecords();
     }
 // Add comic
-    String addComicToVault(Vault comic) {
+    String addComicToVault(Comic comic) {
          return db.addRecord(comic);
     }
 // Delete comic
-    void deleteComic(Vault comic) {
+    void deleteComic(Comic comic) {
          db.delete(comic);
     }
 }

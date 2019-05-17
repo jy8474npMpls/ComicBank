@@ -1,18 +1,25 @@
 // Much of my project code has been cobbled/learned from previous labs and projects
 
-public class Vault {
 
+// Perhaps this should be renamed "Comic" ? This class represents one Comic?
+
+//public class Vault {
+public class Comic {
+    
     // Designate variable names
     private String name;
     private int issue;
     private int year;
     private String title;
 
-    Vault(String n, int i, int y, String t, int s) {
-        name = n;
-        issue = i;
-        year = y;
-        title = t;
+    // Do you need the s parameter?
+    // descriptive parameter names are really helpful
+    Comic(String name, int issue, int year, String title /*, int s*/) {
+//    Vault(String n, int i, int y, String t, int s) {
+        this.name = name;
+        this.issue = issue;
+        this.year = year;
+        this.title = title;
 
     }
 
