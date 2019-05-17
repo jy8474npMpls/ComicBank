@@ -8,6 +8,7 @@ public class VaultDB {
     private static final String DB_CONNECTION_URL = "jdbc:sqlite:comics.sqlite";
 
     private static final String TABLE_NAME = "Collection";
+    private static final String ID_COL = "id";
     private static final String NAME_COL = "Comic";
     private static final String ISSUE_COL = "Issue";
     private static final String YEAR_COL = "Year";
@@ -24,9 +25,9 @@ public class VaultDB {
         try (Connection conn = DriverManager.getConnection(DB_CONNECTION_URL);
              Statement statement = conn.createStatement()) {
 
-            String createTableSQLTemplate = "CREATE TABLE IF NONE EXISTS %s (%s TEXT, %s INTEGER PRIMARY KEY, %s " +
+            String createTableSQLTemplate = "CREATE TABLE IF NOT EXISTS %s (%s TEXT, %s INTEGER PRIMARY KEY, %s " +
                     "INTEGER, %s INTEGER, %s TEXT)";
-            String createTableSQL = String.format(createTableSQLTemplate, TABLE_NAME, NAME_COL, ISSUE_COL, YEAR_COL,
+            String createTableSQL = String.format(createTableSQLTemplate, TABLE_NAME, ID_COL, NAME_COL, ISSUE_COL, YEAR_COL,
                     TITLE_COL);
 
             statement.executeUpdate(createTableSQL);
@@ -36,9 +37,9 @@ public class VaultDB {
         }
 
     }
-    ArrayList<Vault> fetchAllRecords () {
+    ArrayList<Comic> fetchAllRecords () {
 // Get all records
-        ArrayList<Vault> allRecords = new ArrayList<Vault>();
+        ArrayList<Comic> allRecords = new ArrayList<Comic>();
 
         try (Connection conn = DriverManager.getConnection(DB_CONNECTION_URL);
              Statement statement = conn.createStatement()) {
@@ -52,7 +53,8 @@ public class VaultDB {
                 int year = rsAll.getInt(YEAR_COL);
                 String title = rsAll.getString(TITLE_COL);
 
-                Vault vaultRecord = new Comic(name, issue, year, title);
+                // Watch your types - Vault is not the same as Comic
+                Comic vaultRecord = new Comic(name, issue, year, title);
                 allRecords.add(vaultRecord);
             }
 
@@ -66,18 +68,18 @@ public class VaultDB {
 
     }
 // Add a comic
-    String addRecord() {
+    String addRecord(Comic comic) {
 
         String addComicSQL = "INSERT INTO" + TABLE_NAME + " VALUES ( ? , ? , ? , ? )";
         final int SQLITE_CONSTRAINT_PRIMARY_KEY = 19;
 
         try (Connection conn = DriverManager.getConnection(DB_CONNECTION_URL);
-             PreparedStatement addComicPs = conn.preparedStatement(addComicSQL)) {
+             PreparedStatement addComicPs = conn.prepareStatement(addComicSQL)) {
 
             addComicPs.setString(1, comic.getName());
             addComicPs.setInt(2, comic.getIssue());
             addComicPs.setInt(3, comic.getYear());
-            addComicPs.setString(4, comic.geTitle());
+            addComicPs.setString(4, comic.getTitle());
 
             addComicPs.execute();
 
@@ -93,21 +95,26 @@ public class VaultDB {
         }
     }
 // Delete a comic
-    void delete(Vault comic) {
+    void delete(Comic comic) {
 
         String deleteSQL = "DELETE FROM" + TABLE_NAME + " VALUES ( ? , ? , ? , ? )";
 
         try (Connection conn = DriverManager.getConnection(DB_CONNECTION_URL);
-             PreparedStatement deletePreparedStatement = conn.preparedStatement(deletSQL)) {
+             PreparedStatement deletePreparedStatement = conn.prepareStatement(deleteSQL)) {
 
-            while (deletePreparedStatement.next()) {
-                String name = deletePreparedStatement.getName());
-                int issue = deletePreparedStatement.getIssue());
-                int year = deletePreparedStatement.getYear());
-                String title = deletePreparedStatement..getTitle());
-
-            deletePreparedStatement.execute();
-
+       
+            
+//            while (deletePreparedStatement.next()) {
+//                String name = deletePreparedStatement.getName();
+//                int issue = deletePreparedStatement.getIssue();
+//                int year = deletePreparedStatement.getYear();
+//                String title = deletePreparedStatement..getTitle();
+//
+    
+            // You don't need to use a loop here. Just execute the prepared statement.
+                deletePreparedStatement.execute();
+                
+//            }
         } catch (SQLException sqle) {
                 throw new RuntimeException(sqle);
             }
@@ -116,4 +123,4 @@ public class VaultDB {
 
 }
 
-}
+//}   // watch the parenthesis, you don't need this one

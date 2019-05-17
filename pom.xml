@@ -19,38 +19,12 @@
                 </configuration>
             </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <testFailureIgnore>true</testFailureIgnore>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>edu.minneapolis</groupId>
-                <artifactId>ygi-maven-plugin</artifactId>
-                <version>0.0.2-alpha-4</version>
-                <executions>
-                    <execution>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>ygi</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
 
         </plugins>
     </build>
 
-    <properties>
-        <powermock.version>2.0.0-beta.5</powermock.version>
-    </properties>
-
     <dependencies>
 
-        // The SQLite drivers
         <dependency>
             <groupId>org.xerial</groupId>
             <artifactId>sqlite-jdbc</artifactId>
@@ -61,34 +35,6 @@
             <groupId>edu.minneapolis</groupId>
             <artifactId>input-utils</artifactId>
             <version>1.0.2</version>
-        </dependency>
-
-        // JUnit, for running tests on the code
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>test</scope>
-        </dependency>
-
-        // EasyMock, a mocking framework and PowerMock, an extension that works with EasyMock
-        <dependency>
-            <groupId>org.easymock</groupId>
-            <artifactId>easymock</artifactId>
-            <version>3.4</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-module-junit4</artifactId>
-            <version>${powermock.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-api-easymock</artifactId>
-            <version>${powermock.version}</version>
-            <scope>test</scope>
         </dependency>
 
     </dependencies>
